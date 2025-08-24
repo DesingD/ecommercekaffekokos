@@ -13,9 +13,11 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({ onSuccess }) => {
     <PayPalButtons
       createOrder={(data, actions) => {
         return actions.order.create({
+          intent: 'CAPTURE',
           purchase_units: [
             {
               amount: {
+                currency_code: 'USD',
                 value: getCartTotal().toFixed(2),
               },
             },

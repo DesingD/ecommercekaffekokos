@@ -1,5 +1,8 @@
 "use client";
 import React, { useState } from 'react';
+import Modal from '@/components/common/Modal';
+import { supabase } from '@/lib/supabase';
+import Router from 'next/router';
 
 
 const LoginForm = ({}) => {
@@ -10,14 +13,56 @@ const LoginForm = ({}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [remenberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState('');
 
-    alert("¡Registro de usuario exitoso! \nDatos: " + email + ", " + password + ", " + remenberMe + ", " + name + ", " + lastname);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const displayName = `${name} ${lastname}`;
+
+    //buscar si el usuario esta registrado
+    const {data: {user}} = await supabase.auth.getUser();
+    let { data, error } = await supabase.auth.signUp({
+      options:{
+        data:{
+          name,
+          lastname,
+          displayName: displayName
+        }
+      },
+      email: email,
+      password: password
+    })
+
+    console.log(data)
+    console.log(error)
+
+    if (!data.user?.identities || data.user.identities.length === 0) {
+      setModalMsg(`El usuario con el correo ${email} ya está registrado.`);
+      setModalOpen(true);
+      
+    } else {
+      setModalMsg(`¡Registro de usuario exitoso!\nBienvenido/a ${name} ${lastname}, Le hemos enviado un correo para verificar su cuenta. Si no lo encuentra puede buscar en su bandeja de spam`);
+      setModalOpen(true);
+
+      if(!modalOpen){
+        Router.push('/auth/login');
+      }
+    }
+
+    
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+      <Modal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        type={modalMsg.startsWith('¡Registro') ? 'success' : 'error'}
+        title={modalMsg.startsWith('¡Registro') ? '¡Registro exitoso!' : 'Error'}
+        description={modalMsg}
+      />
+      <form onSubmit={handleSubmit}>
         <div className='flex flex-col gap-1'>
         <label htmlFor="name" className='text-xs'>First Name</label>
         <input
@@ -109,7 +154,8 @@ const LoginForm = ({}) => {
         type='submit'
         className='bg-[#131118] text-white w-full h-12 rounded-lg mt-7 cursor-pointer'
       >Signup</button>
-    </form>
+      </form>
+    </>
   );
 };
 

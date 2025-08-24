@@ -1,21 +1,49 @@
 "use client";
 import React, { useState } from 'react';
-
+import Modal from '@/components/common/Modal';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/store/authSlice';
 
 const LoginForm = ({}) => {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [remenberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalMsg, setModalMsg] = useState('');
+  const [modalType, setModalType] = useState<'success' | 'error'>('success');
+  const { login } = useAuth();
 
-    alert("¡Inicio de sesión exitoso! \nDatos: " + email + ", " + password + ", " + remenberMe);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { error } = await login(email, password);
+    if (!error) {
+      setModalMsg('¡Inicio de sesión exitoso!');
+      setModalType('success');
+      setModalOpen(true);
+      setTimeout(() => {
+        setModalOpen(false);
+        router.push('/');
+      }, 1200);
+    } else {
+      setModalMsg('Error al iniciar sesión: ' + error.message);
+      setModalType('error');
+      setModalOpen(true);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+      <Modal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        type={modalType}
+        title={modalType === 'success' ? '¡Bienvenido!' : 'Error'}
+        description={modalMsg}
+      />
+      <form onSubmit={handleSubmit}>
       <div className='flex flex-col gap-1'>
         <label htmlFor="email" className='text-xs'>Email Address</label>
         <input
@@ -24,7 +52,7 @@ const LoginForm = ({}) => {
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder='Example@example.com'
+          placeholder='Example@example.com'          
           required
         />
       </div>
@@ -33,7 +61,6 @@ const LoginForm = ({}) => {
         <input
           className='border border-[#424146] h-12 rounded-lg pl-3 relative'
           type={showPassword ? "text" : "password"}
-          id="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder='********'
@@ -84,7 +111,12 @@ const LoginForm = ({}) => {
         type='submit'
         className='bg-[#131118] text-white w-full h-12 rounded-lg mt-7 cursor-pointer'
       >Login</button>
-    </form>
+
+      <div className="mt-4">
+        <p className='text-[#131118]'>Aun no tienes una cuenta? <a href="/auth/register" className='text-emerald-800 hover:underline'>Registrate</a></p>
+      </div>
+      </form>
+    </>
   );
 };
 

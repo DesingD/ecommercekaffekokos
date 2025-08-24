@@ -28,7 +28,7 @@ const CartSummary: React.FC = () => {
       
       <button 
         className="w-full py-3 bg-[#9A8E5E] text-white rounded-lg hover:bg-[#8a7f54] transition-colors duration-200"
-        onClick={() => alert('Redirigiendo al checkout')}
+        onClick={() => window.location.href = '/shop/checkout'}
       >
         Proceder al Checkout
       </button>

@@ -21,6 +21,7 @@ interface CartContextType {
   clearCart: () => void;
   getCartTotal: () => number;
   getCartCount: () => number;
+  isCartLoaded: boolean;
 }
 
 // Clave para almacenar el carrito en localStorage
@@ -61,19 +62,21 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Inicializar el estado con los datos de localStorage
   const [cart, setCart] = useState<Product[]>([]);
-  
+  const [isCartLoaded, setIsCartLoaded] = useState(false);
+
   // Cargar el carrito desde localStorage al montar el componente
   useEffect(() => {
     const storedCart = loadCartFromStorage();
-    if (storedCart.length > 0) {
-      setCart(storedCart);
-    }
+    setCart(storedCart);
+    setIsCartLoaded(true);
   }, []);
-  
+
   // Guardar el carrito en localStorage cada vez que cambie
   useEffect(() => {
-    saveCartToStorage(cart);
-  }, [cart]);
+    if (isCartLoaded) {
+      saveCartToStorage(cart);
+    }
+  }, [cart, isCartLoaded]);
 
   // Agregar un producto al carrito
   const addToCart = (product: Omit<Product, 'quantity'>) => {
@@ -142,7 +145,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         updateQuantity,
         clearCart,
         getCartTotal,
-        getCartCount
+        getCartCount,
+        isCartLoaded
       }}
     >
       {children}

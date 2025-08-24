@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Modal from '@/components/common/Modal';
 import { useCart } from '@/components/cart/CartContext';
 
 interface CardProps {
+    id: string;
     title: string;
     description?: string;
     imageUrl?: string;
@@ -10,16 +12,15 @@ interface CardProps {
     value?: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, description, imageUrl, discount, discountValue, value }) => {
+const Card: React.FC<CardProps> = ({ id,title, description, imageUrl, discount, discountValue, value }) => {
     const { addToCart } = useCart();
     
+    const [modalOpen, setModalOpen] = useState(false);
+
     const handleAddToCart = () => {
         // Extraer el valor numérico del precio (quitar el símbolo $ y convertir a número)
         const price = value ? parseFloat(value.replace('$', '')) : 0;
         const discountPrice = discount && discountValue ? parseFloat(discountValue.replace('$', '')) : undefined;
-        
-        // Generar un ID único basado en el título (para propósitos de demostración)
-        const id = title.toLowerCase().replace(/\s+/g, '-');
         
         addToCart({
             id,
@@ -29,12 +30,18 @@ const Card: React.FC<CardProps> = ({ title, description, imageUrl, discount, dis
             price,
             discountPrice,
         });
-        
-        // Opcional: Mostrar una notificación de que se agregó al carrito
-        alert(`${title} agregado al carrito`);
+        setModalOpen(true);
     };
     
     return (
+        <>
+        <Modal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            type="success"
+            title="¡Producto agregado!"
+            description={`El producto "${title}" se ha agregado al carrito.`}
+        />
         <div className="grid grid-cols-1 grid-rows-[350px,auto,auto] gap-4">
             <div className="relative w-full h-[350px] bg-[#F1F1F3] overflow-hidden group">
                 {imageUrl && (
@@ -83,6 +90,7 @@ const Card: React.FC<CardProps> = ({ title, description, imageUrl, discount, dis
                 )}
             </div>
         </div>
+        </>
     );
 };
 

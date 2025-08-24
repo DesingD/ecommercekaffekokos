@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import { useCart } from "@/components/cart/CartContext";
+import { useAuth } from "@/store/authSlice";
 
 const Navbar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const { getCartCount } = useCart();
   const cartCount = getCartCount();
+  const { user, loading } = useAuth();
 
   return (
     <nav className="relative flex items-center justify-between py-2 bg-white text-[#131118] px-9 border-b-2 border-b-gray-200">
@@ -78,7 +80,7 @@ const Navbar: React.FC = () => {
             ></path>
           </svg>
         </button>
-        <a href="shop/cart" className="relative cursor-pointer hover:scale-110 transition-all">
+        <a href="/shop/cart" className="relative cursor-pointer hover:scale-110 transition-all">
           <svg
             width="24px"
             height="24px"
@@ -109,7 +111,11 @@ const Navbar: React.FC = () => {
             </span>
           )}
         </a>
-        <button className="cursor-pointer bg-[#9A8E5E] hover:scale-105 transition-all text-white py-2 px-8 rounded">Login</button>
+        {loading ? null : user ? (
+          <span className="font-semibold text-[#9A8E5E] px-4">{user.user_metadata?.displayName || user.email}</span>
+        ) : (
+          <a href="/auth/login" className="cursor-pointer bg-[#9A8E5E] hover:scale-105 transition-all text-white py-2 px-8 rounded">Login</a>
+        )}
       </div>
     </nav>
   );

@@ -78,6 +78,11 @@ const ProductPage = () => {
               alt={product.name}
               className="object-contain w-full h-96"
             />
+            {product.stock === 0 && (
+              <span className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded z-10">
+                Agotado
+              </span>
+            )}
           </div>
           <div className="flex-1 flex flex-col justify-between">
             <div>
@@ -101,11 +106,15 @@ const ProductPage = () => {
               </div>
             </div>
             <button
-              className="w-full py-4 bg-[#9A8E5E] text-white rounded-lg font-medium text-lg hover:bg-[#7c724a] transition-colors flex items-center justify-center gap-2"
+              className={`w-full py-4 bg-[#9A8E5E] text-white rounded-lg font-medium text-lg hover:bg-[#7c724a] transition-colors flex items-center justify-center gap-2
+                ${product.stock === 0 ? 'opacity-60 cursor-not-allowed' : ''}
+              `}
               onClick={handleAddToCart}
-              disabled={isLoadingBtn || isAdded}
+              disabled={isLoadingBtn || isAdded || product.stock === 0}
             >
-              {isLoadingBtn ? (
+              {product.stock === 0 ? (
+                "Agotado"
+              ) : isLoadingBtn ? (
                 // Spinner
                 <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

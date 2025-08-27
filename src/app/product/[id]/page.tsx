@@ -78,11 +78,7 @@ const ProductPage = () => {
               alt={product.name}
               className="object-contain w-full h-96"
             />
-            {product.stock === 0 && (
-              <span className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded z-10">
-                Agotado
-              </span>
-            )}
+            
           </div>
           <div className="flex-1 flex flex-col justify-between">
             <div>

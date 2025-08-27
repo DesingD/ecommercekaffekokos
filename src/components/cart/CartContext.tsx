@@ -29,10 +29,7 @@ const CART_STORAGE_KEY = 'kaffekokos_cart';
 
 // Función para cargar el carrito desde localStorage
 const loadCartFromStorage = (): Product[] => {
-  if (typeof window === 'undefined') {
-    return [];
-  }
-  
+  if (typeof window === 'undefined') return [];
   try {
     const storedCart = localStorage.getItem(CART_STORAGE_KEY);
     return storedCart ? JSON.parse(storedCart) : [];
@@ -44,10 +41,7 @@ const loadCartFromStorage = (): Product[] => {
 
 // Función para guardar el carrito en localStorage
 const saveCartToStorage = (cart: Product[]): void => {
-  if (typeof window === 'undefined') {
-    return;
-  }
-  
+  if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
   } catch (error) {
@@ -60,37 +54,37 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Proveedor del contexto
 export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Inicializar el estado con los datos de localStorage
-  const [cart, setCart] = useState<Product[]>([]);
-  const [isCartLoaded, setIsCartLoaded] = useState(false);
+  // Inicializa el carrito directamente desde localStorage (mejor rendimiento)
+  const [cart, setCart] = useState<Product[]>(() => loadCartFromStorage());
+  const [isCartLoaded, setIsCartLoaded] = useState(true);
 
-  // Cargar el carrito desde localStorage al montar el componente
+  // Sincroniza el carrito entre pestañas
   useEffect(() => {
-    const storedCart = loadCartFromStorage();
-    setCart(storedCart);
-    setIsCartLoaded(true);
+    const syncCart = (e: StorageEvent) => {
+      if (e.key === CART_STORAGE_KEY) {
+        setCart(e.newValue ? JSON.parse(e.newValue) : []);
+      }
+    };
+    window.addEventListener("storage", syncCart);
+    return () => window.removeEventListener("storage", syncCart);
   }, []);
 
-  // Guardar el carrito en localStorage cada vez que cambie
+  // Guarda el carrito en localStorage cada vez que cambie
   useEffect(() => {
-    if (isCartLoaded) {
-      saveCartToStorage(cart);
-    }
-  }, [cart, isCartLoaded]);
+    saveCartToStorage(cart);
+  }, [cart]);
 
   // Agregar un producto al carrito
   const addToCart = (product: Omit<Product, 'quantity'>) => {
     setCart(prevCart => {
-      // Verificar si el producto ya está en el carrito
       const existingProductIndex = prevCart.findIndex(item => item.id === product.id);
-      
       if (existingProductIndex !== -1) {
-        // Si el producto ya existe, incrementar la cantidad
-        const updatedCart = [...prevCart];
-        updatedCart[existingProductIndex].quantity += 1;
-        return updatedCart;
+        return prevCart.map((item, idx) =>
+          idx === existingProductIndex
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
       } else {
-        // Si el producto no existe, agregarlo con cantidad 1
         return [...prevCart, { ...product, quantity: 1 }];
       }
     });
@@ -107,15 +101,11 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       removeFromCart(productId);
       return;
     }
-
-    setCart(prevCart => {
-      return prevCart.map(item => {
-        if (item.id === productId) {
-          return { ...item, quantity };
-        }
-        return item;
-      });
-    });
+    setCart(prevCart =>
+      prevCart.map(item =>
+        item.id === productId ? { ...item, quantity } : item
+      )
+    );
   };
 
   // Limpiar el carrito

@@ -1,8 +1,14 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import useSWR from 'swr';
 import Card from './card';
 import { supabase } from '@/lib/supabase';
 
+const fetchProducts = async () => {
+    const { data: products, error } = await supabase.from('products').select('*');
+    if (error) throw error;
+    return products || [];
+};
 
 const Betseller: React.FC = () => {
     // Example data for the bestseller section
@@ -20,20 +26,10 @@ const Betseller: React.FC = () => {
         price_discount: number;
     };
     
-    const [bestsellers, setBestsellers] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+    const { data: bestsellers = [], isLoading } = useSWR("main-products", fetchProducts, {
+        revalidateOnFocus: false,
+    });
     
-        useEffect(() => {
-            async function fetchData() {
-                setLoading(true);
-                const { data: products, error } = await supabase.from('products').select('*');
-                console.log('Productos recibidos:', products);
-                if (error) console.error(error);
-                else setBestsellers(products);
-                setLoading(false);
-            }
-            fetchData();
-        }, []);
 
     // Pagination logic
     const itemsPerPage = 12;
@@ -55,13 +51,13 @@ const Betseller: React.FC = () => {
     return (
         <div className='my-10'>
             <h3 className='text-center text-4xl font-normal'>Nuestros productos</h3>
-            {loading ? (
+            {isLoading ? (
                 <div className="text-center py-10">Cargando productos...</div>
             ) : bestsellers.length === 0 ? (
                 <div className="text-center py-10 text-red-500">No hay productos para mostrar.</div>
             ) : (
                 <>
-                <div className="grid grid-cols-4 gap-4 mt-8 px-40">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 px-10 lg:px-40">
                     {currentProducts.map((product, index) => (
                         <Card
                             key={product.id}
@@ -72,6 +68,7 @@ const Betseller: React.FC = () => {
                             discount={product.discount}
                             discountValue={product.price_discount ? `$${product.price_discount}` : ''}
                             value={`$${product.price}`}
+                            stock={product.stock}
                         />
                     ))}
                 </div>

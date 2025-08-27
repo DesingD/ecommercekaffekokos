@@ -45,9 +45,9 @@ const LoginForm = ({}) => {
       />
       <form onSubmit={handleSubmit}>
       <div className='flex flex-col gap-1'>
-        <label htmlFor="email" className='text-xs'>Email Address</label>
+        <label htmlFor="email" className='text-xs'>Correo</label>
         <input
-          className='border border-[#424146] h-12 rounded-lg pl-3'
+          className='border border-[#9A8E5E] h-12 rounded-lg pl-3'
           type="email"
           id="email"
           value={email}
@@ -57,9 +57,9 @@ const LoginForm = ({}) => {
         />
       </div>
       <div className='flex flex-col gap-1 mt-7 relative'>
-        <label htmlFor="password" className='text-xs'>Password</label>
+        <label htmlFor="password" className='text-xs'>Contraseña</label>
         <input
-          className='border border-[#424146] h-12 rounded-lg pl-3 relative'
+          className='border border-[#9A8E5E] h-12 rounded-lg pl-3 relative'
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -90,7 +90,7 @@ const LoginForm = ({}) => {
               id="remember" 
               checked={remenberMe}
               onChange={() => setRememberMe(!remenberMe)}
-              className="mr-2 appearance-none w-5 h-5 border-2 border-gray-700 rounded-sm bg-white checked:bg-[#131118] checked:border-0" 
+              className="mr-2 appearance-none w-5 h-5 border-2 border-gray-700 rounded-sm bg-white checked:bg-[#9A8E5E] checked:border-0" 
             />
             <label htmlFor="remember" className="text-normal font-medium select-none">Remember me</label>
             {remenberMe && (
@@ -104,16 +104,16 @@ const LoginForm = ({}) => {
             )}
             
           </div>
-          <a href="#" className="text-normal hover:underline text-[#131118] font-medium">Forgot password?</a>
+          <a href="#" className="text-normal hover:underline text-[#9A8E5E] font-medium">Forgot password?</a>
         </div>
       </div>
       <button 
         type='submit'
-        className='bg-[#131118] text-white w-full h-12 rounded-lg mt-7 cursor-pointer'
+        className='bg-[#9A8E5E] text-white w-full h-12 rounded-lg mt-7 cursor-pointer'
       >Login</button>
 
       <div className="mt-4">
-        <p className='text-[#131118]'>Aun no tienes una cuenta? <a href="/auth/register" className='text-emerald-800 hover:underline'>Registrate</a></p>
+        <p className='text-[#131118]'>Aun no tienes una cuenta? <a href="/auth/register" className='text-[#9A8E5E] hover:underline'>Registrate</a></p>
       </div>
       </form>
     </>

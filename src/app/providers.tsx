@@ -9,7 +9,7 @@ export default function Providers({ children }: { children: ReactNode }) {
   return (
     <PayPalScriptProvider
       options={{
-        clientId: "Adm8P167DmcUtAIR4xaLC1dr1qtgtX_TgA6HGraxACM8gKMY3o13uimTvEvs0nauDRZAjEUPBu37TioO",
+        clientId: process.env.PAYPAL_CLIENT_ID || "test",
         currency: "USD",
         intent: "capture",
 

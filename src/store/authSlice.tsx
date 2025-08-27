@@ -1,61 +1,63 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import Cookies from 'js-cookie';
+import useSWR from 'swr';
 
 interface AuthContextType {
   user: any;
   loading: boolean;
   login: (email: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
+  refreshUser: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Fetcher para SWR
+const fetchUser = async () => {
+  const token = Cookies.get('sb-access-token');
+  if (token) {
+    const { data, error } = await supabase.auth.getUser(token);
+    if (error) throw error;
+    return data.user;
+  }
+  const { data } = await supabase.auth.getSession();
+  return data.session?.user || null;
+};
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const { data: user, isLoading, mutate } = useSWR('user-session', fetchUser, {
+    revalidateOnFocus: false,
+  });
 
-  useEffect(() => {
-    const token = Cookies.get('sb-access-token');
-    if(token) {
-      supabase.auth.getUser(token).then(({ data, error }) => {
-        setUser(data.user || null);
-        setLoading(false);
-      });
-    }
-    supabase.auth.getSession().then(({ data }) => {
-      setUser(data.session?.user || null);
-      setLoading(false);
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-    return () => {
-      listener?.subscription.unsubscribe();
-    };
-  }, []);
-
+  // Login y logout actualizan el cache SWR
   const login = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (!error) {
-      Cookies.set('sb-access-token', data.session?.access_token || '', { expires: 7, secure: true, sameSite: 'strict' });
-      setUser(data.user);
-    };
-
+      Cookies.set('sb-access-token', data.session?.access_token || '', { expires: 7 });
+      mutate(); // Refresca el usuario en caché
+    }
     return { data, error };
   };
 
   const logout = async () => {
     await supabase.auth.signOut();
-    setUser(null);
+    Cookies.remove('sb-access-token');
+    mutate(null); // Limpia el usuario en caché
   };
 
+  // Solo mostrar loader la primera vez
+  const hasLoadedOnce = useRef(false);
+  if (!isLoading && !hasLoadedOnce.current) {
+    hasLoadedOnce.current = true;
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
-      {loading ? (
+    <AuthContext.Provider value={{ user, loading: isLoading, login, logout, refreshUser: mutate }}>
+      {isLoading && !hasLoadedOnce.current ? (
         <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
-          <span className="text-xl font-bold text-[#9A8E5E] animate-pulse">Cargando sesión...</span>
+          <span className="text-xl font-bold text-[#9A8E5E] animate-pulse">Cargando Datos...</span>
         </div>
       ) : (
         children

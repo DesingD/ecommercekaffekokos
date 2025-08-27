@@ -5,6 +5,7 @@ import { useAuth } from '@/store/authSlice';
 import Modal from '@/components/common/Modal';
 import createOrder from '@/lib/orders';
 import createOrderItem from '@/lib/order_items';
+import { decreaseProductStock } from '@/lib/product';
 
 interface FormData {
   firstName: string;
@@ -70,6 +71,7 @@ const ShippingForm: React.FC = () => {
         quantity: item.quantity,
         price: item.price
       });
+      await decreaseProductStock(item.id, item.quantity);
     }
 
     setModalMsg('¡Pago realizado con éxito! Gracias por tu compra.');

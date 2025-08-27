@@ -4,81 +4,32 @@ import Image from "next/image";
 const Footer = () => {
   return (
     <footer className="bg-[#9A8E5E] text-[#eceaec] pt-16 pb-5">
-      <div className="max-w-7xl mx-auto px-12">
-        <div className="grid grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo and Contact Info */}
-          <div className="space-y-4">
-            <h2 className="text-5xl font-medium text-white">Kafee kokos</h2>
-            <div className="flex flex-col gap-4">
-              <p className="flex items-center gap-3">
-                <svg
-                  width="24px"
-                  height="24px"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  color="#D8D7D8"
-                >
-                  <path
-                    d="M18.1182 14.702L14 15.5C11.2183 14.1038 9.5 12.5 8.5 10L9.26995 5.8699L7.81452 2L4.0636 2C2.93605 2 2.04814 2.93178 2.21654 4.04668C2.63695 6.83 3.87653 11.8765 7.5 15.5C11.3052 19.3052 16.7857 20.9564 19.802 21.6127C20.9668 21.8662 22 20.9575 22 19.7655L22 16.1812L18.1182 14.702Z"
-                    stroke="#D8D7D8"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
+          <div className="space-y-4 text-center md:text-left">
+            <h2 className="text-4xl md:text-5xl font-medium text-white">Kafee kokos</h2>
+            <div className="flex flex-col gap-4 items-center md:items-start">
+              <p className="flex items-center gap-3 justify-center md:justify-start">
+                {/* Teléfono */}
+                <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" color="#D8D7D8">
+                  <path d="M18.1182 14.702L14 15.5C11.2183 14.1038 9.5 12.5 8.5 10L9.26995 5.8699L7.81452 2L4.0636 2C2.93605 2 2.04814 2.93178 2.21654 4.04668C2.63695 6.83 3.87653 11.8765 7.5 15.5C11.3052 19.3052 16.7857 20.9564 19.802 21.6127C20.9668 21.8662 22 20.9575 22 19.7655L22 16.1812L18.1182 14.702Z" stroke="#D8D7D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                 </svg>
                 (704) 555-0127
               </p>
-              <p className="flex items-center gap-3">
-                <svg
-                  width="24px"
-                  height="24px"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  color="#D8D7D8"
-                >
-                  <path
-                    d="M7 9L12 12.5L17 9"
-                    stroke="#D8D7D8"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
-                  <path
-                    d="M2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17Z"
-                    stroke="#D8D7D8"
-                    stroke-width="1.5"
-                  ></path>
+              <p className="flex items-center gap-3 justify-center md:justify-start">
+                {/* Email */}
+                <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" color="#D8D7D8">
+                  <path d="M7 9L12 12.5L17 9" stroke="#D8D7D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                  <path d="M2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17Z" stroke="#D8D7D8" strokeWidth="1.5"></path>
                 </svg>
                 info@example.com
               </p>
-              <p className="flex items-center gap-3 pr-20">
-                <svg
-                  className="shrink-0"
-                  width="24px"
-                  height="24px"
-                  stroke-width="1.5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  color="#D8D7D8"
-                >
-                  <path
-                    d="M20 10C20 14.4183 12 22 12 22C12 22 4 14.4183 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10Z"
-                    stroke="#D8D7D8"
-                    stroke-width="1.5"
-                  ></path>
-                  <path
-                    d="M12 11C12.5523 11 13 10.5523 13 10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10C11 10.5523 11.4477 11 12 11Z"
-                    fill="#D8D7D8"
-                    stroke="#D8D7D8"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  ></path>
+              <p className="flex items-center gap-3 justify-center md:justify-start pr-0 md:pr-20">
+                {/* Dirección */}
+                <svg className="shrink-0" width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" color="#D8D7D8">
+                  <path d="M20 10C20 14.4183 12 22 12 22C12 22 4 14.4183 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10Z" stroke="#D8D7D8" strokeWidth="1.5"></path>
+                  <path d="M12 11C12.5523 11 13 10.5523 13 10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10C11 10.5523 11.4477 11 12 11Z" fill="#D8D7D8" stroke="#D8D7D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                 </svg>
                 3891 Ranchview Dr. Richardson, California 62639
               </p>
@@ -86,126 +37,53 @@ const Footer = () => {
           </div>
 
           {/* Information Links */}
-          <div className="flex gap-32">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-32 text-center md:text-left">
             <div>
               <h3 className="font-bold mb-4 text-white">Information</h3>
               <ul className="flex flex-col gap-4">
-                <li>
-                  <a href="/about" className="hover:text-white">
-                    My Account
-                  </a>
-                </li>
-                <li>
-                  <a href="/auth/login" className="hover:text-white">
-                    Login
-                  </a>
-                </li>
-                <li>
-                  <a href="/delivery" className="hover:text-white">
-                    My Cart
-                  </a>
-                </li>
-                <li>
-                  <a href="/privacy" className="hover:text-white">
-                    My Wishlist
-                  </a>
-                </li>
-                <li>
-                  <a href="/terms" className="hover:text-white">
-                    Checkout
-                  </a>
-                </li>
+                <li><a href="/about" className="hover:text-white">My Account</a></li>
+                <li><a href="/auth/login" className="hover:text-white">Login</a></li>
+                <li><a href="/delivery" className="hover:text-white">My Cart</a></li>
+                <li><a href="/privacy" className="hover:text-white">My Wishlist</a></li>
+                <li><a href="/terms" className="hover:text-white">Checkout</a></li>
               </ul>
             </div>
-
-            {/* Service Links */}
             <div>
               <h3 className="font-bold mb-4 text-white">Service</h3>
               <ul className="flex flex-col gap-4">
-                <li>
-                  <a href="/account" className="hover:text-white">
-                    About us
-                  </a>
-                </li>
-                <li>
-                  <a href="/login" className="hover:text-white">
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a href="/cart" className="hover:text-white">
-                    Delivery Information
-                  </a>
-                </li>
-                <li>
-                  <a href="/wishlist" className="hover:text-white">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="/checkout" className="hover:text-white">
-                    Terms & Conditions
-                  </a>
-                </li>
+                <li><a href="/account" className="hover:text-white">About us</a></li>
+                <li><a href="/login" className="hover:text-white">Careers</a></li>
+                <li><a href="/cart" className="hover:text-white">Delivery Information</a></li>
+                <li><a href="/wishlist" className="hover:text-white">Privacy Policy</a></li>
+                <li><a href="/checkout" className="hover:text-white">Terms & Conditions</a></li>
               </ul>
             </div>
           </div>
+
           {/* Subscribe Section */}
-          <div className="flex flex-col">
-            <h3 className="font-bold mb-4 text-white pl-15">Subscribe</h3>
-            <p className="mb-4 pl-15">
-              Enter your email below to be the first to know about new
-              collections and product launches.
+          <div className="flex flex-col items-center md:items-start">
+            <h3 className="font-bold mb-4 text-white">Subscribe</h3>
+            <p className="mb-4 text-center md:text-left">
+              Enter your email below to be the first to know about new collections and product launches.
             </p>
-            <div className="flex gap-2 pl-15">
-              <div className="relative flex-grow">
+            <div className="flex gap-2 w-full justify-center md:justify-start">
+              <div className="relative flex-grow max-w-xs">
                 <input
                   type="email"
                   placeholder="Your Email"
-                  className="w-full bg-transparent border-2 border-[#D8D7D8] rounded-md pl-12 pr-14 py-2" // Aumenta el pr-14 para el botón
+                  className="w-full bg-transparent border-2 border-[#D8D7D8] rounded-md pl-12 pr-14 py-2"
                 />
                 {/* Icono del email */}
                 <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                  <svg
-                    width="24px"
-                    height="24px"
-                    strokeWidth="1.5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    color="#D8D7D8"
-                  >
-                    <path
-                      d="M7 9L12 12.5L17 9"
-                      stroke="#D8D7D8"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17Z"
-                      stroke="#D8D7D8"
-                      strokeWidth="1.5"
-                    />
+                  <svg width="24px" height="24px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" color="#D8D7D8">
+                    <path d="M7 9L12 12.5L17 9" stroke="#D8D7D8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M2 17V7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17Z" stroke="#D8D7D8" strokeWidth="1.5" />
                   </svg>
                 </div>
                 {/* Botón de envío */}
-                <button
-                  className="absolute right-2 top-1/2 -translate-y-1/2  text-white p-2 rounded"
-                  type="button"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
+                <button className="absolute right-2 top-1/2 -translate-y-1/2 text-white p-2 rounded" type="button">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </button>
               </div>
@@ -214,47 +92,26 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-6 border-t border-white/10 grid grid-cols-3 gap-8">
-          <div className="flex gap-2">
+        <div className="mt-12 pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+          <div className="flex gap-2 items-center justify-center md:justify-start">
             {/* Payment Methods */}
-            <Image
-              className="rounded"
-              src="/PaymentIcons/Visa.jpg"
-              alt="Visa"
-              width={35}
-              height={20}
-            />
-            <Image
-              className="rounded"
-              src="/PaymentIcons/Mastercard.jpg"
-              alt="Mastercard"
-              width={35}
-              height={20}
-            />
-            <Image
-              className="rounded"
-              src="/PaymentIcons/GooglePay.jpg"
-              alt="Google Pay"
-              width={35}
-              height={20}
-            />
-            <Image
-              className="rounded"
-              src="/PaymentIcons/Amex.jpg"
-              alt="American Express"
-              width={35}
-              height={20}
-            />
-            <Image
-              className="rounded"
-              src="/PaymentIcons/PayPal.jpg"
-              alt="PayPal"
-              width={35}
-              height={20}
-            />
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-6 flex items-center justify-center">
+                <Image className="rounded object-contain" src="/PaymentIcons/Paypal.jpg" alt="PayPal" width={35} height={20} style={{ width: "35px", height: "20px" }} />
+              </div>
+              <div className="w-10 h-6 flex items-center justify-center">
+                <Image className="rounded object-contain" src="/PaymentIcons/Visa.jpg" alt="Visa" width={35} height={20} style={{ width: "35px", height: "20px" }} />
+              </div>
+              <div className="w-10 h-6 flex items-center justify-center">
+                <Image className="rounded object-contain" src="/PaymentIcons/Mastercard.jpg" alt="Mastercard" width={35} height={20} style={{ width: "35px", height: "20px" }} />
+              </div>
+              <div className="w-10 h-6 flex items-center justify-center">
+                <Image className="rounded object-contain" src="/PaymentIcons/Amex.jpg" alt="Amex" width={35} height={20} style={{ width: "35px", height: "20px" }} />
+              </div>
+            </div>
           </div>
           <p className="text-center">©2025 Kafee Koko All Rights are reserved</p>
-          <div className="flex gap-4 justify-end">
+          <div className="flex gap-4 justify-center md:justify-end">
             <a href="#" className="hover:text-gray-300">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />

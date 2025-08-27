@@ -4,21 +4,16 @@ import Image from "next/image";
 
 export default function ProductsPage() {
   return (
-    <div className="w-[90vw] h-[100vh] grid grid-cols-2">
-      <div className="">
-        <Image
-          src="/RegisterImage.jpg"
-          alt="Login Image"
-          width={400}
-          height={400}
-          className="w-full"
-        />
-      </div>
-      <div className="flex flex-col justify-center pl-10">
-        <h2 className="font-bold text-5xl select-none">Create New Account​</h2>          
-        <p className="text-[#a4a1aa] mb-8 mt-5 select-none">Please enter details</p>
-          {/* Contenido de la página */}
-          <RegisterForm/>
+    <div className="min-h-screen flex items-center justify-center bg-[#faf9fb]">
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-xl px-8 py-10 flex flex-col items-center">        
+        <div className="mb-6">
+          <Image src="/logos/logo.png" alt="Logo" width={120} height={120} />
+        </div>        
+        <h2 className="text-2xl font-semibold mb-2">Registro de usuario</h2>      
+        <div className="w-full mt-4">
+          <RegisterForm />
+        </div>        
+        
       </div>
     </div>
   );

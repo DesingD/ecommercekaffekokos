@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import { useCart } from '@/components/cart/CartContext';
+import Link from 'next/link';
 
 interface CardProps {
     id: string;
@@ -10,18 +11,21 @@ interface CardProps {
     discount?: boolean;
     discountValue?: string;
     value?: string;
+    stock: number;
 }
 
-const Card: React.FC<CardProps> = ({ id,title, description, imageUrl, discount, discountValue, value }) => {
+const Card: React.FC<CardProps> = ({ id, title, description, imageUrl, discount, discountValue, value, stock }) => {
     const { addToCart } = useCart();
-    
     const [modalOpen, setModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isAdded, setIsAdded] = useState(false);
 
-    const handleAddToCart = () => {
-        // Extraer el valor numérico del precio (quitar el símbolo $ y convertir a número)
+    const handleAddToCart = async (e: React.MouseEvent) => {
+        e.preventDefault(); // Evita la navegación del Link
+        setIsLoading(true);
+        await new Promise((res) => setTimeout(res, 700));
         const price = value ? parseFloat(value.replace('$', '')) : 0;
         const discountPrice = discount && discountValue ? parseFloat(discountValue.replace('$', '')) : undefined;
-        
         addToCart({
             id,
             title,
@@ -30,66 +34,87 @@ const Card: React.FC<CardProps> = ({ id,title, description, imageUrl, discount, 
             price,
             discountPrice,
         });
-        setModalOpen(true);
+        setIsLoading(false);
+        setIsAdded(true);
+        setTimeout(() => setIsAdded(false), 1200);
     };
-    
+
     return (
         <>
-        <Modal
-            open={modalOpen}
-            onClose={() => setModalOpen(false)}
-            type="success"
-            title="¡Producto agregado!"
-            description={`El producto "${title}" se ha agregado al carrito.`}
-        />
-        <div className="grid grid-cols-1 grid-rows-[350px,auto,auto] gap-4">
-            <div className="relative w-full h-[350px] bg-[#F1F1F3] overflow-hidden group">
-                {imageUrl && (
-                    <>
-                        <img 
-                            src={imageUrl} 
-                            alt={title} 
-                            className="w-full h-full object-contain transition-all duration-300 group-hover:opacity-50" 
-                        />
-                        {/* Overlay con botones */}
-                        <div className="absolute right-4 top-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <button className="w-10 h-10 cursor-pointer bg-white rounded-full hover:bg-[#9A8E5E] hover:text-white transition-colors duration-200 flex items-center justify-center">                                
-                                <svg width="20" height="20" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="currentColor">
-                                    <path d="M22 8.86222C22 10.4087 21.4062 11.8941 20.3458 12.9929C17.9049 15.523 15.5374 18.1613 13.0053 20.5997C12.4249 21.1505 11.5042 21.1304 10.9488 20.5547L3.65376 12.9929C1.44875 10.7072 1.44875 7.01723 3.65376 4.73157C5.88044 2.42345 9.50794 2.42345 11.7346 4.73157L11.9998 5.00642L12.2648 4.73173C13.3324 3.6245 14.7864 3 16.3053 3C17.8242 3 19.2781 3.62444 20.3458 4.73157C21.4063 5.83045 22 7.31577 22 8.86222Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"></path>
-                                </svg>
-                            </button>
+            <Modal
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                type="success"
+                title="¡Producto agregado!"
+                description={`El producto "${title}" se ha agregado al carrito.`}
+            />
+            <div className="relative group">
+                <Link
+                    href={`/product/${id}`}
+                    className="block focus:outline-none"
+                    tabIndex={0}
+                >
+                    <div className="grid grid-cols-1 grid-rows-[350px,auto,auto] gap-4 bg-white rounded-xl transition-all cursor-pointer">
+                        <div className="relative w-full h-[350px] bg-[#F1F1F3] overflow-hidden">
+                            {imageUrl && (
+                                <img
+                                    src={imageUrl}
+                                    alt={title}
+                                    className="w-full h-full object-contain transition-all duration-300 group-hover:opacity-50"
+                                />
+                            )}
+                            {stock === 0 && (
+                                <span className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded z-10">
+                                    Agotado
+                                </span>
+                            )}
                         </div>
-                        {/* Botón Add to Cart */}
-                        <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <button 
-                                onClick={handleAddToCart}
-                                className="w-full py-4 cursor-pointer bg-white hover:bg-[#9A8E5E] hover:text-white transition-colors duration-200 text-sm font-medium rounded-lg"
-                            >
-                                Add to Cart
-                            </button>
+                        <div>
+                            <h3 className="text-lg font-medium">{title}</h3>
+                            {description && <p className="text-gray-600 text-sm">{description}</p>}
                         </div>
-                    </>
-                )}
-            </div>
-            <div className="">
-                <h3 className="text-lg font-medium">{title}</h3>
-                {description && <p className="text-gray-600 text-sm">{description}</p>}
-            </div>
-            <div className="flex items-center gap-2">
-                {discount && <span className="text-neutral-950 font-normal">{discountValue}</span>}
-                {value && (
-                    <span
-                        className={`font-normal ${
-                            discount
-                                ? 'line-through text-[#B0ADB5]'
-                                : 'text-neutral-950'
-                        }`}
+                        <div className="flex items-center gap-2">
+                            {discount && <span className="text-neutral-950 font-normal">{discountValue}</span>}
+                            {value && (
+                                <span
+                                    className={`font-normal ${
+                                        discount
+                                            ? 'line-through text-[#B0ADB5]'
+                                            : 'text-neutral-950'
+                                    }`}
+                                >
+                                    {value}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                </Link>
+                {/* Botón Add to Cart superpuesto */}
+                <div className="absolute bottom-33 left-4 right-4 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none md:pointer-events-auto">
+                    <button
+                        onClick={handleAddToCart}
+                        disabled={stock === 0 || isLoading || isAdded}
+                        className={`w-full py-4 cursor-pointer bg-white hover:bg-[#9A8E5E] hover:text-white transition-colors duration-200 text-sm font-medium rounded-lg flex items-center justify-center gap-2 pointer-events-auto
+                            ${stock === 0 ? 'opacity-60 cursor-not-allowed' : ''}
+                        `}
                     >
-                        {value}
-                    </span>
-                )}
+                        {stock === 0 ? (
+                            "Agotado"
+                        ) : isLoading ? (
+                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                            </svg>
+                        ) : isAdded ? (
+                            <svg className="h-5 w-5 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        ) : (
+                            "Add to Cart"
+                        )}
+                    </button>
+                </div>
             </div>
-        </div>
         </>
     );
 };

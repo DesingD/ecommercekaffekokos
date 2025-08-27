@@ -64,9 +64,9 @@ const LoginForm = ({}) => {
       />
       <form onSubmit={handleSubmit}>
         <div className='flex flex-col gap-1'>
-        <label htmlFor="name" className='text-xs'>First Name</label>
+        <label htmlFor="name" className='text-xs'>Nombre</label>
         <input
-          className='border border-[#424146] h-12 rounded-lg pl-3'
+          className='border border-[#9A8E5E] h-12 rounded-lg pl-3'
           type="text"
           id="name"
           value={name}
@@ -76,9 +76,9 @@ const LoginForm = ({}) => {
         />
       </div>
       <div className='flex flex-col gap-1 mt-7'>
-        <label htmlFor="lastname" className='text-xs'>Last Name</label>
+        <label htmlFor="lastname" className='text-xs'>Apellido</label>
         <input
-          className='border border-[#424146] h-12 rounded-lg pl-3'
+          className='border border-[#9A8E5E] h-12 rounded-lg pl-3'
           type="text"
           id="lastname"
           value={lastname}
@@ -88,9 +88,9 @@ const LoginForm = ({}) => {
         />
       </div>
       <div className='flex flex-col gap-1 mt-7'>
-        <label htmlFor="email" className='text-xs'>Email Address</label>
+        <label htmlFor="email" className='text-xs'>Correo</label>
         <input
-          className='border border-[#424146] h-12 rounded-lg pl-3'
+          className='border border-[#9A8E5E] h-12 rounded-lg pl-3'
           type="email"
           id="email"
           value={email}
@@ -100,9 +100,9 @@ const LoginForm = ({}) => {
         />
       </div>
       <div className='flex flex-col gap-1 mt-7 relative'>
-        <label htmlFor="password" className='text-xs'>Password</label>
+        <label htmlFor="password" className='text-xs'>Contraseña</label>
         <input
-          className='border border-[#424146] h-12 rounded-lg pl-3 relative'
+          className='border border-[#9A8E5E] h-12 rounded-lg pl-3 relative'
           type={showPassword ? "text" : "password"}
           id="password"
           value={password}
@@ -134,9 +134,9 @@ const LoginForm = ({}) => {
               id="remember" 
               checked={remenberMe}
               onChange={() => setRememberMe(!remenberMe)}
-              className="mr-2 appearance-none w-5 h-5 border-2 border-gray-700 rounded-sm bg-white checked:bg-[#131118] checked:border-0" 
+              className="mr-2 appearance-none w-5 h-5 border-2 border-gray-700 rounded-sm bg-white checked:bg-[#9A8E5E] checked:border-0" 
             />
-            <label htmlFor="remember" className="text-normal font-medium select-none">I agree to the <span><a href="#" className='outline-none font-extrabold'>Terms & Conditions</a></span></label>
+            <label htmlFor="remember" className="text-normal font-medium select-none">Yo acepto los <span><a href="#" className='outline-none font-extrabold'>Terminos y condiciones</a></span> de esta pagina</label>
             {remenberMe && (
               <svg className="
                   absolute       
@@ -152,8 +152,11 @@ const LoginForm = ({}) => {
       </div>
       <button 
         type='submit'
-        className='bg-[#131118] text-white w-full h-12 rounded-lg mt-7 cursor-pointer'
-      >Signup</button>
+        className='bg-[#9A8E5E] text-white w-full h-12 rounded-lg mt-7 cursor-pointer'
+      >Registrarme</button>
+      <div className="mt-4">
+        <p className='text-[#131118]'>Ya tienes una cuenta? <a href="/auth/login" className='text-[#9A8E5E] hover:underline'>Inicia Sesión</a></p>
+      </div>
       </form>
     </>
   );

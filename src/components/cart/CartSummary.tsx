@@ -1,5 +1,6 @@
 import React from 'react';
 import { useCart } from './CartContext';
+import Link from 'next/link';
 
 const CartSummary: React.FC = () => {
   const { getCartTotal, getCartCount, clearCart } = useCart();
@@ -26,12 +27,11 @@ const CartSummary: React.FC = () => {
         </div>
       </div>
       
-      <button 
-        className="w-full py-3 bg-[#9A8E5E] text-white rounded-lg hover:bg-[#8a7f54] transition-colors duration-200"
-        onClick={() => window.location.href = '/shop/checkout'}
+      <Link href="/shop/checkout" 
+        className="block w-full py-3 text-center bg-[#9A8E5E] text-white rounded-lg hover:bg-[#8a7f54] transition-colors duration-200"
       >
         Proceder al Checkout
-      </button>
+      </Link>
       
       <button 
         className="w-full py-2 mt-2 text-[#9A8E5E] hover:underline"

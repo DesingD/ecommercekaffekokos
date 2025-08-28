@@ -21,7 +21,7 @@ const Betseller: React.FC = () => {
         price: number;
         stock: number;
         is_active: boolean;
-        image_url: string;
+        image_url: string[];
         discount: boolean;
         price_discount: number;
     };
@@ -64,7 +64,7 @@ const Betseller: React.FC = () => {
                             id={product.id}
                             title={product.name}
                             description={product.shortDescription || product.description}
-                            imageUrl={product.image_url}
+                            imageUrl={product.image_url[0]}
                             discount={product.discount}
                             discountValue={product.price_discount ? `$${product.price_discount}` : ''}
                             value={`$${product.price}`}

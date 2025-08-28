@@ -5,6 +5,8 @@ import Footer from '@/components/common/Footer';
 import Navbar from '@/components/common/Navbar';
 import { getProductById } from '@/lib/product';
 import { useCart } from '@/components/cart/CartContext';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
 
 const ProductPage = () => {
   const params = useParams();
@@ -52,7 +54,7 @@ const ProductPage = () => {
     id: product.id,
     title: product.name,
     description: product.description,
-    imageUrl: product.image_url,
+    imageUrl: product.image_url[0],
     price,
     discountPrice,
   });
@@ -73,11 +75,30 @@ const ProductPage = () => {
       <div className="max-w-3xl mx-auto py-10 px-4">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="flex-1 flex items-center justify-center bg-[#F1F1F3] rounded-lg p-6">
-            <img
-              src={product.image_url}
-              alt={product.name}
-              className="object-contain w-full h-96"
-            />
+            <div className="w-full">
+            <Carousel
+              showThumbs={false}
+              showStatus={false}
+              infiniteLoop
+              emulateTouch
+              className="rounded-lg"
+            >
+              {(product.images && product.images.length > 0 ? product.images : [product.image_url]).map((img: string, idx: number) => (
+                <div key={idx}>
+                  <img
+                    src={img}
+                    alt={product.name}
+                    className="object-contain w-full h-96"
+                  />
+                </div>
+              ))}
+            </Carousel>
+            {product.stock === 0 && (
+              <span className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded z-10">
+                Agotado
+              </span>
+            )}
+          </div>
             
           </div>
           <div className="flex-1 flex flex-col justify-between">

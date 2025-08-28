@@ -75,30 +75,73 @@ const ProductPage = () => {
       <div className="max-w-3xl mx-auto py-10 px-4">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="flex-1 flex items-center justify-center bg-[#F1F1F3] rounded-lg p-6">
-            <div className="w-full">
-            <Carousel
-              showThumbs={false}
-              showStatus={false}
-              infiniteLoop
-              emulateTouch
-              className="rounded-lg"
-            >
-              {(product.images && product.images.length > 0 ? product.images : [product.image_url]).map((img: string, idx: number) => (
-                <div key={idx}>
-                  <img
-                    src={img}
-                    alt={product.name}
-                    className="object-contain w-full h-96"
+            <div className="relative w-full">
+              <Carousel
+                showThumbs={false}
+                showStatus={false}
+                infiniteLoop
+                emulateTouch
+                className="rounded-lg"
+                renderArrowPrev={(onClickHandler, hasPrev, label) =>
+                  hasPrev && (
+                    <button
+                      type="button"
+                      onClick={onClickHandler}
+                      title={label}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-[#9A8E5E] text-white rounded-full p-2 z-10 shadow-lg hover:bg-[#857a4b] transition-colors"
+                    >
+                      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                  )
+                }
+                renderArrowNext={(onClickHandler, hasNext, label) =>
+                  hasNext && (
+                    <button
+                      type="button"
+                      onClick={onClickHandler}
+                      title={label}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#9A8E5E] text-white rounded-full p-2 z-10 shadow-lg hover:bg-[#857a4b] transition-colors"
+                    >
+                      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                  )
+                }
+                renderIndicator={(onClickHandler, isSelected, index, label) => (
+                  <li
+                    key={index}
+                    className={`inline-block mx-1 w-3 h-3 rounded-full cursor-pointer transition-all duration-200 ${
+                      isSelected ? 'bg-[#9A8E5E]' : 'bg-gray-300'
+                    }`}
+                    onClick={onClickHandler}
+                    aria-label={label}
+                    role="button"
+                    tabIndex={0}
                   />
-                </div>
-              ))}
-            </Carousel>
-            {product.stock === 0 && (
-              <span className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded z-10">
-                Agotado
-              </span>
-            )}
-          </div>
+                )}
+              >
+                {(Array.isArray(product.image_url) && product.image_url.length > 0
+                  ? product.image_url
+                  : [product.image_url]
+                ).map((img: string, idx: number) => (
+                  <div key={idx} className="relative">
+                    <img
+                      src={img}
+                      alt={product.name}
+                      className="object-contain w-full h-96 rounded-lg bg-white"
+                    />
+                    {product.stock === 0 && (
+                      <span className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded z-10 shadow">
+                        Agotado
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </Carousel>
+            </div>
             
           </div>
           <div className="flex-1 flex flex-col justify-between">

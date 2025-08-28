@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 
 const fetchProducts = async () => {
     const { data: products, error } = await supabase.from('products').select('*');
+    console.log(products);
     if (error) throw error;
     return products || [];
 };
@@ -64,7 +65,11 @@ const Betseller: React.FC = () => {
                             id={product.id}
                             title={product.name}
                             description={product.shortDescription || product.description}
-                            imageUrl={product.image_url[0]}
+                            imageUrl={
+                                Array.isArray(product.image_url) && product.image_url.length > 0
+                                ? product.image_url[0]
+                                : "/placeholder.jpg" // Usa una imagen por defecto si no hay imagen
+                            }
                             discount={product.discount}
                             discountValue={product.price_discount ? `$${product.price_discount}` : ''}
                             value={`$${product.price}`}

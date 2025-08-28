@@ -27,3 +27,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.carousel .control-arrow,
+.carousel.carousel-slider .control-arrow {
+  background: #9A8E5E !important; /* tu color dorado */
+  opacity: 1 !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.carousel .control-arrow:before {
+  color: #fff !important; /* color de la flecha */
+  font-size: 24px;
+}
